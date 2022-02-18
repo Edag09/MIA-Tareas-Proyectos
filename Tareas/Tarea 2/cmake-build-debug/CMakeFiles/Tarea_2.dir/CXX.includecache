@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/renea/OneDrive/Escritorio/[MIA]Tareas_Proyectos/Tareas/Tarea 2/main.cpp
+iostream
+-
+ctime
+-
+stdio.h
+-
+string.h
+-
+stdlib.h
+-
+
