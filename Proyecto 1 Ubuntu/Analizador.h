@@ -19,6 +19,7 @@ public:
     void disk(string cad);
     void create_disk(string cadena);
     void find_disk(string cadena);
+    void Ejecucion();
 };
 
 void Analyzer::disk(string path) {
@@ -65,12 +66,44 @@ void Analyzer::disk(string path) {
             }
             
         }
-        
+
+        stringstream pas2(path);
+        string recorrido;
+        while (getline(pas2, recorrido, ' ')){
+            if (recorrido == "mkdisk"){
+                    Ejecucion();
+                    break;
+                }else
+                // Se remueve el disco
+                if(recorrido == "rmdisk"){
+                    cout << "Disco Removido\n";
+                }else
+                //Se monta el disco
+                if(recorrido == "mount"){
+                    cout << "Disco Montado\n";
+                }else
+                //Se desmonta el disco
+                if(recorrido == "unmount"){
+                    cout << "Disco Desmontado\n";
+                }else
+                //Se busca en el disco
+                if(recorrido == "fdisk"){
+                    cout << "Busqueda de Disco\n";
+                }else
+                //Se formatea el disco
+                if (recorrido == "mkfs"){
+                    cout << "Disco Formateado\n";
+                }else
+                //Se crea los reportes
+                if(recorrido == "rep"){
+                    cout << "Reporte General\n";
+                }
+            
+        }   
     }
 }
 
 void Analyzer::create_disk(string creacion){
-    
     stringstream crea(creacion);
     string body;
     int status = 0;
@@ -104,4 +137,8 @@ void Analyzer::create_disk(string creacion){
 
 void Analyzer::find_disk(string find){
     cout << find << endl;
+}
+
+void Analyzer::Ejecucion(){
+    cout<<"Archivo binario creado\n";
 }
