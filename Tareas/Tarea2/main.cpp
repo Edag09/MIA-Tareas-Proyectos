@@ -9,10 +9,18 @@ using namespace std;
 
 string path = "./disk.dk";
 
+struct Partition{
+    int size = 0;
+    char unit;
+    char name[25];
+};
+
+
 struct MBR{
     int size;
     char create_date[17];
     int disk_signature;
+    Partition partitions[4];
 };
 
 string Fecha (int arch){
@@ -53,6 +61,37 @@ void escritura(){
 
 }
 
+void fdisk(int size, char unit, string path, string name){
+  // LEER MBR
+  MBR mbr;
+  FILE *disk_file = fopen(path.c_str(), "r+");
+  fseek(disk_file, 0, SEEK_SET);
+  fread(&mbr, sizeof(MBR), 1, disk_file);
+
+  // BUSCAR PARTICION LIBRE
+  int partitionIndex = 0;
+  for(int i =0; i < 4; i++) {
+    if(mbr.partitions[i].size == 0){
+      partitionIndex = i;
+      break;
+    }
+  }
+
+  // AGREGAR PARTICION
+  Partition nuevaPart;
+  nuevaPart.size = 1024 * (unit == 'm' ? 1024 : 1) * size;
+  nuevaPart.unit = unit;
+  strcpy(nuevaPart.name, name.c_str());
+
+  mbr.partitions[partitionIndex] = nuevaPart;
+
+  // GUARDAR
+  fseek(disk_file, 0, SEEK_SET);
+  fwrite(&mbr, sizeof(MBR), 1, disk_file);
+
+  fclose(disk_file);
+}
+
 void mostrar_Disco(){
 
     MBR disco;
@@ -65,6 +104,13 @@ void mostrar_Disco(){
     cout << disco.size << endl;
     cout << disco.create_date << endl;
     cout << disco.disk_signature << endl;
+
+    for(int i =0; i < 4;i++) {
+    cout << disco.partitions[i].size << endl
+         << disco.partitions[i].unit << endl
+         << disco.partitions[i].name << endl;
+    cout << "------------" << endl;
+  }
 }
 
 void openFile(string dirrecion){
@@ -73,6 +119,8 @@ void openFile(string dirrecion){
     while(getline(archivo, linea)){
         if (linea == "mkdisk"){
             escritura();
+        }else if (linea == "fkdisk"){
+            fdisk(3, 'm', "disk.dk", "primero"); 
         }else{
             mostrar_Disco();
         }
