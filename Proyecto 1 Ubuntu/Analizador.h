@@ -2,143 +2,109 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include "mkdisk.h"
+#include "partitions.h"
 
 using namespace std;
 
-struct mkdisk{
-    int size;
-    string fit = "BF";
-    int unit = 1024*1024;
-    string path;
-};
-
 class Analyzer{
-public:
-    mkdisk MBR;
-public:
-    void disk(string cad);
-    void create_disk(string cadena);
-    void find_disk(string cadena);
-    void Ejecucion();
+    public:
+        void disk(string cad);
 };
 
-void Analyzer::disk(string path) {
-    int status = 0;
+void Analyzer :: disk(string path){
     ifstream docs(path);
     string lector;
-    //Se abre el archivo para poder leerlo
+
+    //Inicia el analizador
+
     while (getline(docs, lector)){
+        int position = 0;
         stringstream entrada(lector);
-        string cadena;
-        //Se lee cada una de las lineas que trae el archivo
-        while (getline(entrada, cadena, ' ')){
-            //Se crea el disco
-            if (cadena == "mkdisk"){
-                cout << "Disco Creado\n";
-                //create_disk(cadena);
-                status = 1;
-            }else
-            // Se remueve el disco
-            if(cadena == "rmdisk"){
-                cout << "Disco Removido\n";
-            }else
-            //Se monta el disco
-            if(cadena == "mount"){
-                cout << "Disco Montado\n";
-            }else
-            //Se desmonta el disco
-            if(cadena == "unmount"){
-                cout << "Disco Desmontado\n";
-            }else
-            //Se busca en el disco
-            if(cadena == "fdisk"){
-                cout << "Busqueda de Disco\n";
-            }else
-            //Se formatea el disco
-            if (cadena == "mkfs"){
-                cout << "Disco Formateado\n";
-            }else
-            //Se crea los reportes
-            if(cadena == "rep"){
-                cout << "Reporte General\n";
-            }else if(status == 1){
-                create_disk(cadena);
-            }
-            
-        }
-
-        stringstream pas2(path);
         string recorrido;
-        while (getline(pas2, recorrido, ' ')){
-            if (recorrido == "mkdisk"){
-                    Ejecucion();
-                    break;
-                }else
-                // Se remueve el disco
-                if(recorrido == "rmdisk"){
-                    cout << "Disco Removido\n";
-                }else
-                //Se monta el disco
-                if(recorrido == "mount"){
-                    cout << "Disco Montado\n";
-                }else
-                //Se desmonta el disco
-                if(recorrido == "unmount"){
-                    cout << "Disco Desmontado\n";
-                }else
-                //Se busca en el disco
-                if(recorrido == "fdisk"){
-                    cout << "Busqueda de Disco\n";
-                }else
-                //Se formatea el disco
-                if (recorrido == "mkfs"){
-                    cout << "Disco Formateado\n";
-                }else
-                //Se crea los reportes
-                if(recorrido == "rep"){
-                    cout << "Reporte General\n";
-                }
-            
-        }   
-    }
-}
 
-void Analyzer::create_disk(string creacion){
-    stringstream crea(creacion);
-    string body;
-    int status = 0;
-    while (getline(crea, body, '=')){
-        if (body == "-Size"){
-            status = 1;
-        }else if(body == "-unit"){
-            status = 2;
-        }else if(body == "-path"){
-            status = 3;
-        }else if(status == 1){
-            MBR.size = stoi(body);
-            cout << MBR.size << endl;
-        }else if(status == 2){
-            if (body == "K")
-            {
-                MBR.unit = 1024;
-                cout << body << endl;
-            }else if(body == "M"){
-                MBR.unit = 1024*1024;
-                cout << body << endl;
+        // Reconoce los comandos
+
+        while (getline(entrada, recorrido, ' ')){
+            if(recorrido == "mkdisk"){
+                position = 1;
+                cout << "Creando Disco...\n";
+
+            }else if(recorrido == "rmdisk"){
+                position == 2;
+                //cout << "Removiendo disco\n";
+
+            }else if(recorrido == "fdisk"){
+                position = 3;
+                cout << "Buscando disco...\n";
+
+            }else if(recorrido == "mount"){
+                cout << "Montando disco\n";
+
+            }else if(recorrido == "unmount"){
+                cout << "Desmontando disco\n";
+
+            }else if(recorrido == "mkfs"){
+                cout << "Formateando disco\n";
+
+            }else if(recorrido == "rep"){
+                position = 7;
+                cout<<"Generando Reporte\n";
+
+            }else if(position == 1){
+                //Analizador MK
+                Creacion().analizador_mk(recorrido);
+                //cout << "Analiza el MK\n";
+            
+            }else if(position == 2){
+                //Eliminacion del disco
+                
+                cout << "Removiendo\n";
+            
+            }else if(position == 3){
+                //Analizador FD
+                Particiones().analizador_fd(recorrido);
+                //cout << "Analizar el FD\n";
             }
-        }else if(status == 3){
-            MBR.path = body;
-            cout << MBR.path << endl;
         }
-        
+
+        stringstream entrada2(lector);
+        string recorrido2;
+
+        //Ejecuta los comandos
+
+        while (getline(entrada2, recorrido2, ' ')){
+            if( recorrido2 == "mkdisk"){
+                //Ejecuta MK
+                Creacion().ejecutarMK();
+                break;
+                //cout<<"Ejecutando Disco\n";
+
+            }else if( recorrido2 == "rmdisk"){
+                //Remover dsico
+                //Creacion().analizador_rm(recorrido2);
+                cout << "Disco Removido\n";
+
+            }else if( recorrido2 == "fdisk"){
+                Particiones().ejecudar_particion();
+                break;
+                //cout << "Disco encontrado\n";
+
+            }else if( recorrido2 == "mount"){
+                cout << "Disco montado\n";
+
+            }else if( recorrido2 == "unmount"){
+                cout << "Disco desmontado\n";
+
+            }else if( recorrido2 == "mkfs"){
+                cout << "Disco Formateado\n";
+
+            }else if( recorrido2 == "rep"){
+                cout << "Reportes generados\n";
+
+            }
+        }
+          
     }
     
-}
-
-void Analyzer::find_disk(string find){
-    cout << find << endl;
-}
-
-void Analyzer::Ejecucion(){
-    cout<<"Archivo binario creado\n";
 }
