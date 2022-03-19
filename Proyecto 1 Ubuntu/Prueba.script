@@ -1,0 +1,7 @@
+mkdisk -path=Disco1/Disco1.dk -unit=K -Size=30
+mkdisk -size=50 -unit=m -path=/home/mia/Disco1.dk
+
+
+rmdisk -path=/home/mia/Disco1.dk
+rmdisk -path=/home/mia/primersemestre/Disco2.dk
+rmdisk -path=/home/mia/primersemestre/entrada1/Disco3.dk

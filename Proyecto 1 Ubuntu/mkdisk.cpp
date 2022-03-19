@@ -9,6 +9,11 @@
 
 using namespace std;
 
+struct eliminar{
+    string path;
+};
+
+
 struct partitions{
     int size = 0;
     char unit;
@@ -35,6 +40,7 @@ struct mkdisk{
 
 mkdisk MBR;
 mkcreation MBRC;
+eliminar bai;
 
 string Creacion :: fecha_formato(int data){
     return (data < 10 ? "0" : "") + to_string(data);  
@@ -85,7 +91,12 @@ void Creacion :: writedisk(){
     strcpy(MBRC.mbr_create_date, mbr_fecha_creacion.c_str());
     MBRC.mbr_dsk_signature = mbr_signature;
 
+    string parent_dir = MBR.path.substr(0, MBR.path.find_last_of("/\\"));
+    string mkfiles = "mkdir -p " + parent_dir;
+    system(mkfiles.c_str());
+
     FILE *archivo_disco = fopen(MBR.path.c_str(), "wb");
+
 
     fseek(archivo_disco, 0, SEEK_SET);
 
@@ -119,9 +130,9 @@ void Creacion :: analizador_rm(string direccion){
         if (lecture == "-path"){
             position = 1;
         }else if(position == 1){
-            //Creacion().borrardk(lecture);
-            cout << "Aqui\n";
-            cout << lecture << endl;
+            //
+            bai.path = lecture;
+            cout << bai.path << endl;
         }
         
     }
@@ -129,8 +140,9 @@ void Creacion :: analizador_rm(string direccion){
 }
 
 
-void Creacion :: borrardk(string direccion){
+void Creacion :: borrardk(){
     string pregunta;
+    string direccion = bai.path;
     if(direccion.length() > 0){
         //Abre el archivo 
         FILE *archivo = fopen(direccion.c_str(), "rb");
@@ -142,6 +154,7 @@ void Creacion :: borrardk(string direccion){
 
             if(pregunta == "s" || pregunta == "S"){
                 int removed = remove(direccion.c_str());
+                cout<<"El disco ha sido eliminado\n";
                 if(removed != 0)
                     cout << "No es posible eliminar el disco\n";
             }

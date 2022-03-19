@@ -31,7 +31,7 @@ void Analyzer :: disk(string path){
                 cout << "Creando Disco...\n";
 
             }else if(recorrido == "rmdisk"){
-                position == 2;
+                position = 2;
                 //cout << "Removiendo disco\n";
 
             }else if(recorrido == "fdisk"){
@@ -58,8 +58,8 @@ void Analyzer :: disk(string path){
             
             }else if(position == 2){
                 //Eliminacion del disco
-                
-                cout << "Removiendo\n";
+                Creacion().analizador_rm(recorrido);
+                //cout << "Removiendo\n";
             
             }else if(position == 3){
                 //Analizador FD
@@ -82,8 +82,8 @@ void Analyzer :: disk(string path){
 
             }else if( recorrido2 == "rmdisk"){
                 //Remover dsico
-                //Creacion().analizador_rm(recorrido2);
-                cout << "Disco Removido\n";
+                Creacion().borrardk();
+                //cout << "Disco Removido\n";
 
             }else if( recorrido2 == "fdisk"){
                 Particiones().ejecudar_particion();

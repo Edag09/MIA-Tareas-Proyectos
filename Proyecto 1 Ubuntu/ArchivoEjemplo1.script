@@ -25,4 +25,4 @@ fdisk -Size=5000 -path="/home/mia/primer semestre/entrada1/Disco3.dk" -name=Part
 fdisk -Size=30 -path="/home/mia/primer semestre/entrada1/Disco3.dk" -unit=m -type=E -fit=bf -name=Particion2
 fdisk -Size=5 -type=L -unit=m -path="/home/mia/primer semestre/entrada1/Disco3.dk" -name=Particion3
 fdisk -type=L -unit=k -Size=4096 -path="/home/mia/primer semestre/entrada1/Disco3.dk" -name=Particion4
-fdisk -Size=3 -path="/home/mia/primer semestre/entrada1/Disco3.dk" -name=Particion5 -unit=m
+fdisk -Size=3 -path="/home/mia/primer semestre/entrada1/Disco3.dk" -name=Particion5 -unit=m   

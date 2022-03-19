@@ -13,6 +13,8 @@ using namespace std;
 int size = 0;
 int unit = 0;
 string path, name;
+int particionesLogicas = 23;
+int pref = 17;
 
 struct Partitions{
     int size = 0;

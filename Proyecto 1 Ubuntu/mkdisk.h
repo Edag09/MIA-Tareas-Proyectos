@@ -14,5 +14,5 @@ class Creacion{
         void analizador_mk(string data);
         void ejecutarMK();
         void analizador_rm(string path);
-        void borrardk(string path);
+        void borrardk();
 };

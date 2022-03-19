@@ -1,4 +1,31 @@
-mkdisk -path=Disco1.dk -unit=K -Size=30
-fdisk -path=Disco1.dk -unit=K -Size=3 -name="primera"
-rmdisk -path=Disco1.dk
+# Archivo de Ejemplo 1
+# MIA 1er Semestre 2022
+
+# Creacion de primer disco
+mkdisk -size=50 -unit=M -path=/home/mia/Disco1.dk
+
+# Creacion particiones disco 1, 4 primarias
+fdisk -Size=5 -path=Disco1/Disco1.dk -unit=M -name="Particion1"
+fdisk -Size=1024 -path=Disco1/Disco1.dk -name="Particion2" -unit=K
+fdisk -Size=10 -unit=M -path=Disco1/Disco1.dk -name="Particion3"
+
+# Creacion de segundo y tercer disco
+mkdisk -size=25 -fit=bf -unit=M -path=/home/mia/primersemestre/Disco2.dk
+mkdisk -unit=K -size=75 -path=/home/mia/primersemestre/entrada1/Disco3.dk
+
+# Creacion de particiones disco 2, 3 primarias 1 extendida
+fdisk -Size=500 -unit=k -path=/home/mia/primersemestre/Disco2.dk -name=Particion1 -fit=ff
+fdisk -Size=1024 -path=/home/mia/primersemestre/Disco2.dk -unit=k -name=Particion2
+fdisk -Size=10 -unit=m -path=/home/mia/primersemestre/Disco2.dk -name=Particion3
+fdisk -unit=k -Size=4096 -path=/home/mia/primersemestre/Disco2.dk -type=E -name=Particion4 -fit=wf  
+
+# Creacion de particiones disco 3, 2 primarias, 1 extendida y 2 logicas
+fdisk -Size=5000 -path=/home/mia/primersemestre/entrada1/Disco3.dk -name=Particion1 -unit=B 
+fdisk -Size=30 -path=/home/mia/primersemestre/entrada1/Disco3.dk -unit=M -type=E -fit=bf -name=Particion2
+fdisk -Size=5 -type=L -unit=M -path=/home/mia/primersemestre/entrada1/Disco3.dk -name=Particion3
+fdisk -type=L -unit=K -Size=4096 -path=/home/mia/primersemestre/entrada1/Disco3.dk -name=Particion4
+fdisk -Size=3 -path=/home/mia/primersemestre/entrada1/Disco3.dk -name=Particion5 -unit=M   
+
+
 rep
+
